@@ -1,6 +1,10 @@
 # hello-elasticsearch
 
-- interactive Terminal Mode `docker run -it --rm --name elasticsearch -p9200:9200 -p9300:9300 --entrypoint bash elasticsearch`
+- Interactive Terminal Mode
+
+```shell
+$ docker run -it --rm --name elasticsearch -p9200:9200 -p9300:9300 --entrypoint bash elasticsearch
+```
 
 ### References
 
