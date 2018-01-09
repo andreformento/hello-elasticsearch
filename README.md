@@ -2,18 +2,17 @@
 
 ## How to do
 
-- Run elasticsearch
+- Run elasticsearch `docker-compose up`
+- After all, stop container with `docker-compose stop` _(not yet, my little brother)_
 
-```shell
-$ docker run --rm -d \
-         --name elasticsearch \
-         -p 9200:9200 -p 9300:9300 \
-         elasticsearch
-```
+### Kibana
 
+Access [Kibana](http://localhost:5601)
+
+### Interactive Terminal Mode
 - Create sample Data
 
-```shell
+```console
 $ curl -XPOST 'http://localhost:9200/twitter/tweed/1' -d '
 {
 "user": "oveits",
@@ -27,7 +26,7 @@ $ curl -XPOST 'http://localhost:9200/twitter/tweed/1' -d '
 - Search String in any Field `curl -XGET 'localhost:9200/twitter/_search?q=2016'`
 
 - Search for Entries within a Time Range
-```shell
+```console
 curl -XGET 'localhost:9200/twitter/_search?' -d '
 { "query":{
       "range":{
@@ -38,8 +37,6 @@ curl -XGET 'localhost:9200/twitter/_search?' -d '
 '
 ```
 
-- After all, stop container with `docker stop elasticsearch`
-
 ### Requirements
 
 - `Docker` _(just it, seriously!)_
@@ -48,3 +45,4 @@ curl -XGET 'localhost:9200/twitter/_search?' -d '
 ### References
 
 - https://oliverveits.wordpress.com/2016/11/18/elasticsearch-hello-world-example/
+- https://github.com/deviantony/docker-elk
