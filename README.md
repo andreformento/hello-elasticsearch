@@ -28,7 +28,7 @@ $ curl -XPOST 'http://localhost:9200/twitter/tweed/1' -d '
 
 - Search for Entries within a Time Range
 ```shell
-curl -XGET localhost:9200/twitter/_search? -d '
+curl -XGET 'localhost:9200/twitter/_search?' -d '
 { "query":{
       "range":{
          "postDate":{ "from":"2016-11-18T15:00:00",
