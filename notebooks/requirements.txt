@@ -1,0 +1,2 @@
+elasticsearch<9
+sentence-transformers==2.7.0
