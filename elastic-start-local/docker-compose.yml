@@ -27,8 +27,8 @@ services:
           "CMD-SHELL",
           "curl --output /dev/null --silent --head --fail -u elastic:${ES_LOCAL_PASSWORD} http://elasticsearch:9200",
         ]
-      interval: 10s
-      timeout: 10s
+      interval: 3s
+      timeout: 3s
       retries: 30
 
   kibana_settings:
@@ -77,8 +77,8 @@ services:
           "CMD-SHELL",
           "curl -s -I http://kibana:5601 | grep -q 'HTTP/1.1 302 Found'",
         ]
-      interval: 10s
-      timeout: 10s
+      interval: 3s
+      timeout: 3s
       retries: 30
 
 volumes:
