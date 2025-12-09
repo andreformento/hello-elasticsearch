@@ -1,6 +1,6 @@
 # hello-elasticsearch
 
-- start: `docker compose up --wait`
+- start: `make start`
 - user `elastic`
 - password: `cat .env | grep ES_LOCAL_PASSWORD`
 - Elasticsearch will be running at http://localhost:9200
