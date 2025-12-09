@@ -6,7 +6,6 @@
 - Elasticsearch will be running at http://localhost:9200
 - Kibana will be running at http://localhost:5601
 - Jupyter Notebook will be running at http://localhost:8888
-- ES Host: http://elasticsearch:9200
 
 ### References
 
