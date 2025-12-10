@@ -1,7 +1,7 @@
 services:
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:${ES_LOCAL_VERSION}
-    container_name: ${ES_LOCAL_CONTAINER_NAME}
+    container_name: elasticsearch
     volumes:
       - dev-elasticsearch:/usr/share/elasticsearch/data
     ports:
@@ -25,7 +25,7 @@ services:
       test:
         [
           "CMD-SHELL",
-          "curl --output /dev/null --silent --head --fail -u elastic:${ES_LOCAL_PASSWORD} http://elasticsearch:9200",
+          "curl --output /dev/null --silent --max-time 1 --head --fail -u elastic:${ES_LOCAL_PASSWORD} http://elasticsearch:9200",
         ]
       interval: 1s
       timeout: 1s
@@ -37,20 +37,19 @@ services:
       elasticsearch:
         condition: service_healthy
     image: docker.elastic.co/elasticsearch/elasticsearch:${ES_LOCAL_VERSION}
-    container_name: ${KIBANA_LOCAL_SETTINGS_CONTAINER_NAME}
+    container_name: kibana-settings
     restart: 'no'
     command: >
       bash -c '
         echo "Setup the kibana_system password";
-        start_time=$$(date +%s);
-        timeout=60;
-        until curl -s -u "elastic:${ES_LOCAL_PASSWORD}" -X POST http://elasticsearch:9200/_security/user/kibana_system/_password -d "{\"password\":\"${KIBANA_LOCAL_PASSWORD}\"}" -H "Content-Type: application/json" | grep -q "^{}"; do
-          if [ $$(($$(date +%s) - $$start_time)) -ge $$timeout ]; then
-            echo "Error: Elasticsearch timeout";
-            exit 1;
+        for i in {1..30}; do
+          if curl -s --max-time 1 -u "elastic:${ES_LOCAL_PASSWORD}" -X POST http://elasticsearch:9200/_security/user/kibana_system/_password -d "{\"password\":\"${KIBANA_LOCAL_PASSWORD}\"}" -H "Content-Type: application/json" | grep -q "^{}"; then
+            exit 0;
           fi;
-          sleep 2;
+          sleep 1;
         done;
+        echo "Error: Failed after 30 attempts";
+        exit 1;
       '
 
   kibana:
@@ -58,7 +57,7 @@ services:
       kibana_settings:
         condition: service_completed_successfully
     image: docker.elastic.co/kibana/kibana:${ES_LOCAL_VERSION}
-    container_name: ${KIBANA_LOCAL_CONTAINER_NAME}
+    container_name: kibana
     volumes:
       - dev-kibana:/usr/share/kibana/data
       - ./elastic-start-local/config/telemetry.yml:/usr/share/kibana/config/telemetry.yml
